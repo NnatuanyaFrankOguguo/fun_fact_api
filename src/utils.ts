@@ -34,7 +34,7 @@ export const isPerfectSqr = (num: number) : boolean => {
 
 export const getFunFact = async(num: number): Promise<string> => {
     try {
-        const response = await axios.get(`http://numbersapi.com/${num}/math?callback=showNumber`);
+        const response = await axios.get(`http://numbersapi.com/${num}/math`);
         return response.data
     } catch (error) {
         return "No fun fact available"
