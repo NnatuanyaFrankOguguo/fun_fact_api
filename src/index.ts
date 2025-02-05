@@ -14,16 +14,17 @@ app.use(cors());
 app.use(express.json());
 app.use(compression())
 
-app.get('/api/classify-number', async (req: Request, res: Response) => {
+app.get('/api/classify-number', async (req: Request, res: Response)=> {
     try {
         const numStr = req.query.number;
         const num = Number(numStr)
 
-        if (!numStr || isNaN(num) || numStr === undefined || numStr === "") {
+        if (!numStr || isNaN(num)) {
             res.status(400).json({
-                number: num,
+                number: numStr,
                 error: true,
             })
+            return;
         }
         const properties: string[] = [];
     
