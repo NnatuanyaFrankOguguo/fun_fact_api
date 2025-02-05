@@ -21,8 +21,14 @@ export const isArmstrong = (num: number) : boolean => {
 // check if a number is a perfect number
 
 export const isPerfectSqr = (num: number) : boolean => {
-    if (num < 0) return false
-    return (Number.isInteger(Math.sqrt(num)))
+    let sum = 1;
+    for (let i = 2; i * i <= num; i++) {
+        if (num % i === 0) {
+            sum += i;
+            if (i !== num / i) sum += num / i;
+        }
+    }
+    return sum === num && num !== 1;
 
 }
 

@@ -16,13 +16,17 @@ app.use(compression())
 
 app.get('/api/classify-number', async (req: Request, res: Response) => {
     try {
-        const num = parseInt(req.query.number as string); // Get number from query params
-        if (isNaN(num)) {
-            res.status(400).json({ number: "alphabet", error: true });
-        }
+        const num = req.query.number;
 
-        const result = await classifyNumber(num);
+        if (!num || isNaN(Number(num))) {
+            res.status(400).json({
+                number: num,
+                error: true,
+            });
+        }
+        const result = await classifyNumber(Number(num));
         res.json(result); // Send response properly
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
