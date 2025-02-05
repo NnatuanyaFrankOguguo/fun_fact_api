@@ -16,26 +16,37 @@ app.use(compression())
 
 app.get('/api/classify-number', async (req: Request, res: Response) => {
     try {
-        const num = req.query.number;
+        const numStr = req.query.number;
+        const num = Number(numStr)
 
-        if (!num || isNaN(Number(num))) {
-            res.status(400).json({
+        if (!num || isNaN(num)) {
+             res.status(400).json({
                 number: num,
                 error: true,
-            });
+            })
         }
         const properties: string[] = [];
     
-        if(isArmstrong(Number(num))) properties.push("armstrong");
-        properties.push(Number(num) % 2 === 0 ? "even" : "odd");
+        if(isArmstrong(num)) properties.push("armstrong");
+        properties.push(num % 2 === 0 ? "even" : "odd");
+
+        const digitSum = (n: number): number => {
+            let sum = 0;
+            let num = Math.abs(n);
+            while (num > 0) {
+                sum += num % 10;
+                num = Math.floor(num / 10);
+            }
+            return sum;
+        };
 
         res.status(200).json({
             number: num,
-            is_prime: isPrime(Number(num)),
-            is_perfect: isPerfectSqr(Number(num)),
+            is_prime: isPrime(num),
+            is_perfect: isPerfectSqr(num),
             properties,
-            digit_sum: Number(num).toString().split("").reduce((sum, digit) => sum + parseInt(digit), 0),
-            fun_fact: await getFunFact(Number(num)),
+            digit_sum: digitSum(num),
+            fun_fact: await getFunFact(num),
         });
     } catch (error) {
         console.error(error);
