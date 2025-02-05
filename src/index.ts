@@ -24,7 +24,7 @@ app.get('/api/classify-number', async (req: Request, res: Response)=> {
                 number: numStr,
                 error: true,
             })
-            return;
+            return; // na these return been give me a strong bug
         }
         const properties: string[] = [];
     
