@@ -8,7 +8,7 @@ import compression from 'compression';
 dotenv.config();
 
 const app = express();
-const PORT  = process.env.PORT as string
+const PORT  = process.env.PORT as string 
 
 app.use(cors());
 app.use(express.json());
