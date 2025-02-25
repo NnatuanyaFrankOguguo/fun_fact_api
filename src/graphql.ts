@@ -1,6 +1,7 @@
 import { ApolloServer, gql } from "apollo-server-express";
 import express from "express";
 import {isPrime, isArmstrong, isPerfectSqr, getFunFact, isFibonacci, isPalindrome, sumOfDivisors, isAbundant, isDeficient} from './utils'
+import { Server } from 'http'
 
 
 
@@ -51,8 +52,8 @@ const resolvers = {
 };
 
 
-export const createGraphQLServer = async (app: express.Application) => {
-     
+export const createGraphQLServer = async (app: express.Application, httpServer: Server) => {
+    
     const server = new ApolloServer({ typeDefs, resolvers });
     await server.start();
     
