@@ -9,6 +9,8 @@ import { Server } from "socket.io"; // Socket.IO server setup
 import expressWinston from 'express-winston';
 import winston from 'winston';
 import client from "prom-client"
+import { setupSwagger } from './swagger';
+import  router  from './routes/funFacts';
 
 
 
@@ -38,7 +40,7 @@ app.use(expressWinston.logger({
     expressFormat: true, // Logs in an Express-friendly format,
     colorize: false, // Colorize log output
 }));
-
+setupSwagger(app); // Set up Swagger documentation
 // Prometheus client setup
 const collectDefaultMetrics = client.collectDefaultMetrics;
 collectDefaultMetrics(); // Automatically collects CPU, memory, and request metrics
@@ -73,6 +75,8 @@ app.get('/api/classify-number', async (req: Request, res: Response)=> {
     }
 });
 
+app.use('/api/v1', router);
+
 // ✅ WebSocket connection event
 io.on("connection", (socket) => {
     console.log("Client connected");
@@ -81,8 +85,13 @@ io.on("connection", (socket) => {
 })
 
 // ✅ Start the HTTP server (not `app.listen`)
-httpServer.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+// ✅ Only start the server if this file is run directly
+if (require.main === module) {
+    httpServer.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+}
 
 
+
+export default app; // Export the Express app for testing purposes
